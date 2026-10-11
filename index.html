@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GAS TOKEN ($GASS) — Whitepaper & Mechanics</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'gas-bg': '#ffffff',
+                        'gas-card': '#f8fafc',
+                        'gas-card-border': '#e2e8f0',
+                        'gas-border': '#e2e8f0',
+                        'gas-gold': '#d97706',
+                        'gas-orange': '#ea580c',
+                        'gas-green': '#16a34a',
+                        'gas-dark': '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1e293b;
+            font-family:
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Oxygen,
+                Ubuntu,
+                Cantarell,
+                sans-serif;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.2;
+        }
+
+        /* =================================================
+           RANGE SLIDER
+        ================================================= */
+
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 5px;
+            border: 1px solid #cbd5e1;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #ea580c;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.4);
+            transition:
+                transform 0.1s ease,
+                background-color 0.1s ease;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #d97706;
+        }
+
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 5px;
+            border: 1px solid #cbd5e1;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #ea580c;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.4);
+        }
+
+        /* =================================================
+           SECTION ARTWORK
+        ================================================= */
+
+        .section-art {
+            width: 100%;
+            max-width: 540px;
+            height: auto;
+            max-height: none;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            margin: 0 auto 32px auto;
+            border-radius: 34px;
+            opacity: 0.96;
+
+            filter:
+                drop-shadow(0 16px 30px rgba(15, 23, 42, 0.08));
+
+            -webkit-mask-image:
+                radial-gradient(
+                    ellipse at center,
+                    black 68%,
+                    rgba(0,0,0,0.94) 78%,
+                    rgba(0,0,0,0.60) 90%,
+                    transparent 100%
+                );
+
+            mask-image:
+                radial-gradient(
+                    ellipse at center,
+                    black 68%,
+                    rgba(0,0,0,0.94) 78%,
+                    rgba(0,0,0,0.60) 90%,
+                    transparent 100%
+                );
+        }
+
+        /* =================================================
+           HERO ARTWORK
+        ================================================= */
+
+        .hero-art {
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            max-height: none;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            margin: 0 auto;
+            border-radius: 34px;
+
+            filter:
+                drop-shadow(0 20px 35px rgba(15, 23, 42, 0.10));
+
+            -webkit-mask-image:
+                radial-gradient(
+                    ellipse at center,
+                    black 73%,
+                    rgba(0,0,0,0.94) 83%,
+                    rgba(0,0,0,0.58) 94%,
+                    transparent 100%
+                );
+
+            mask-image:
+                radial-gradient(
+                    ellipse at center,
+                    black 73%,
+                    rgba(0,0,0,0.94) 83%,
+                    rgba(0,0,0,0.58) 94%,
+                    transparent 100%
+                );
+        }
+
+        /* =================================================
+           TICKER IMAGE
+        ================================================= */
+
+        .ticker-image {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 50%;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* =================================================
+           SOFT SECTION BACKGROUNDS
+        ================================================= */
+
+        .soft-section {
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(248,250,252,0.92),
+                    rgba(255,255,255,0.98)
+                );
+        }
+
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (max-width: 768px) {
+
+            body {
+                font-size: 16px;
+                line-height: 1.65;
+            }
+
+            .section-art {
+                max-width: 420px;
+                margin-bottom: 28px;
+            }
+
+            .hero-art {
+                max-width: 420px;
+            }
+
+            .ticker-image {
+                width: 42px;
+                height: 42px;
+            }
+        }
+    </style>
+</head>
+
+
+<body class="bg-white min-h-screen pb-12 antialiased text-slate-800">
+
+
+    <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 py-8 md:py-12">
+
+
+        <!-- =================================================
+             HERO SECTION
+        ================================================== -->
+
+        <header class="border-b border-slate-200 pb-10 mb-10">
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+
+
+                <!-- LEFT SIDE -->
+
+                <div class="md:col-span-7 flex flex-col items-center md:items-start text-center md:text-left">
+
+
+                    <!-- TICKER + BADGE -->
+
+                    <div class="inline-flex items-center gap-3 mb-5">
+
+                        <img
+                            src="Ticker.png"
+                            alt="$GASS Ticker"
+                            class="ticker-image"
+                        >
+
+                        <span class="text-sm uppercase font-extrabold tracking-widest text-orange-600 bg-orange-100 border border-orange-200 px-4 py-2 rounded-full">
+
+                            Official Whitepaper
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- TITLE -->
+
+                    <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-none mb-5">
+
+                        GAS TOKEN
+
+                        <span class="text-orange-600">
+                            $GASS
+                        </span>
+
+                    </h1>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <p class="text-slate-600 font-medium text-xl md:text-2xl max-w-2xl mb-6">
+
+                        The World's First Real-World Gasoline Price Pegged Deflationary Crypto Asset
+
+                    </p>
+
+
+                    <p class="text-slate-700 font-medium text-lg md:text-xl max-w-2xl mb-7">
+
+                        The economy's going down so lets pump <strong class="text-amber-700">
+                    $GASS</strong>!
+                        Now you can make money pumping <strong class="text-amber-700">
+                    $GASS</strong>!
+                        Every time gas prices go up tokens get burnt!
+                        Don't be assed out in this economy!
+                        It's your ASS or <strong class="text-amber-700">
+                    $GASS</strong>!
+
+                    </p>
+
+
+                    <!-- BUY BUTTONS -->
+
+                    <div class="flex flex-col sm:flex-row gap-3 mb-7 w-full sm:w-auto">
+
+                        <a
+                            href="https://raydium.io/swap/?outputMint=4QesBTYAbo5ZqeErm1cHxhJ5bEmD8TS6Lfs1QDbxj6vS&inputMint=sol"
+                            class="inline-flex items-center justify-center bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-lg px-7 py-3 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
+                        >
+
+                            🚀 Buy $GASS
+
+                        </a>
+
+
+                        <a
+                            href="#"
+                            class="inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-lg px-7 py-3 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
+                        >
+
+                            View Chart
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- CONTRACT ADDRESS -->
+
+                    <div class="w-full max-w-xl bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+
+                        <span
+                            class="font-mono text-sm md:text-base text-slate-700 break-all px-2"
+                            id="contract-address"
+                        >
+
+                            4QesBTYAbo5ZqeErm1cHxhJ5bEmD8TS6Lfs1QDbxj6vS
+
+                        </span>
+
+
+                        <button
+                            onclick="copyAddress()"
+                            class="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-3 rounded-lg transition-colors text-base flex items-center justify-center gap-2 shrink-0 shadow-sm"
+                        >
+
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                ></path>
+
+                            </svg>
+
+
+                            <span id="copy-btn-text">
+                                Copy CA
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HERO IMAGE -->
+
+                <div class="md:col-span-5 flex justify-center">
+
+                    <div class="relative group w-full flex justify-center">
+
+                        <img
+                            src="Backdrop_2.jpg"
+                            alt="$GASS Character Artwork"
+                            class="hero-art transition-transform duration-300 group-hover:scale-[1.015]"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             ABSTRACT
+        ================================================== -->
+
+        <section
+            id="abstract"
+            class="soft-section rounded-2xl p-6 md:p-9 mb-8"
+        >
+
+            <img
+                src="Media3.jpg"
+                alt="$GASS Abstract"
+                class="section-art"
+            >
+
+
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-600 border-b border-slate-200 pb-4 mb-5 flex items-center gap-3">
+
+                <svg
+                    class="w-7 h-7 text-orange-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+
+                </svg>
+
+                Abstract
+
+            </h2>
+
+
+            <p class="text-slate-700 text-lg md:text-xl leading-relaxed mb-5">
+
+                Traditional deflationary tokens rely strictly on trading volume
+                to trigger supply burns. During market consolidation or low
+                volume periods, burn mechanics stagnate.
+
+                <strong class="text-amber-700">
+                    $GASS
+                </strong>
+
+                solves this by decoupling tokenomics from market volume and
+                pegging deflation directly to a real-world macroeconomic metric:
+                national retail gasoline prices.
+
+            </p>
+
+
+            <p class="text-slate-700 text-lg md:text-xl leading-relaxed">
+
+                When gas prices rise at the pump, consumer purchasing power
+                declines.
+
+                <strong class="text-amber-700">
+                    $GASS
+                </strong>
+
+                acts as an algorithmic macroeconomic hedge—automatically burning
+                token supply from dedicated reserve accounts whenever real-world
+                gasoline prices break baseline thresholds.
+
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             TOKENOMICS
+        ================================================== -->
+
+        <section
+            id="tokenomics"
+            class="soft-section rounded-2xl p-6 md:p-9 mb-8"
+        >
+
+            <img
+                src="Media4.jpg"
+                alt="$GASS Tokenomics and Distribution"
+                class="section-art"
+            >
+
+
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-600 border-b border-slate-200 pb-4 mb-5 flex items-center gap-3">
+
+                <svg
+                    class="w-7 h-7 text-orange-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+                    ></path>
+
+                    <path
+                        d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
+                    ></path>
+
+                </svg>
+
+                Tokenomics & Distribution
+
+            </h2>
+
+
+            <p class="text-slate-700 text-lg md:text-xl mb-7">
+
+                Total Supply is strictly capped at
+
+                <strong class="text-slate-900">
+                    1,000,000,000
+                    <span class="text-amber-700">$GASS</span>
+                </strong>.
+
+                Mint authority is permanently revoked upon creation.
+
+            </p>
+
+
+            <div class="overflow-x-auto mb-7">
+
+                <table class="w-full text-left border-collapse">
+
+                    <thead>
+
+                        <tr class="border-b border-slate-200 text-amber-700 text-base md:text-lg">
+
+                            <th class="py-4 px-4">
+                                Allocation
+                            </th>
+
+                            <th class="py-4 px-4">
+                                Amount
+                            </th>
+
+                            <th class="py-4 px-4">
+                                Percentage
+                            </th>
+
+                            <th class="py-4 px-4">
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y divide-slate-200 text-slate-700 text-base md:text-lg">
+
+
+                        <!-- COMBINED BURN RESERVE / LIQUIDITY POOL -->
+
+                        <tr class="hover:bg-slate-100/70">
+
+                            <td class="py-4 px-4 font-semibold text-slate-900">
+                                Permanently Locked Liquidity Pool
+                            </td>
+
+                            <td class="py-4 px-4 font-mono">
+                                900,000,000
+                            </td>
+
+                            <td class="py-4 px-4 font-semibold text-amber-600">
+                                90%
+                            </td>
+
+                            <td class="py-4 px-4">
+
+                                <span class="inline-block bg-green-100 text-green-800 border border-green-200 text-sm font-bold px-3 py-1.5 rounded-md">
+
+                                    Liquidity Allocation — Lock Status Must Be Verified
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- AIRDROPS / MARKETING -->
+
+                        <tr class="hover:bg-slate-100/70">
+
+                            <td class="py-4 px-4 font-semibold text-slate-900">
+                                Airdrops / Marketing
+                            </td>
+
+                            <td class="py-4 px-4 font-mono">
+                                50,000,000
+                            </td>
+
+                            <td class="py-4 px-4 font-semibold text-amber-600">
+                                5%
+                            </td>
+
+                            <td class="py-4 px-4">
+
+                                <span class="inline-block bg-orange-100 text-orange-800 border border-orange-200 text-sm font-bold px-3 py-1.5 rounded-md">
+
+                                    200-Day Community Distribution
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- DEVELOPMENT -->
+
+                        <tr class="hover:bg-slate-100/70">
+
+                            <td class="py-4 px-4 font-semibold text-slate-900">
+                                Burn Reserve
+                            </td>
+
+                            <td class="py-4 px-4 font-mono">
+                                50,000,000
+                            </td>
+
+                            <td class="py-4 px-4 font-semibold text-amber-600">
+                                5%
+                            </td>
+
+                            <td class="py-4 px-4">
+
+                                <span class="inline-block bg-green-100 text-green-800 border border-green-200 text-sm font-bold px-3 py-1.5 rounded-md">
+
+                                    Oracle Burn Reserve — 50,000,000 $GASS
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- AIRDROPS / MARKETING EXPLANATION -->
+
+            <div class="bg-white rounded-xl p-5 text-base md:text-lg text-slate-700 shadow-sm mb-5">
+
+                <p class="leading-relaxed">
+
+                    <strong class="text-orange-600">
+                        Airdrops / Marketing Allocation:
+                    </strong>
+
+                    The 50,000,000 <strong class="text-amber-700">$GASS</strong>
+                    Airdrops / Marketing allocation is dedicated to rewarding
+                    and growing the <strong class="text-amber-700">$GASS</strong>
+                    community.
+
+                    The wallet unlocks
+
+                    <strong class="text-slate-900">
+                        0.50% of the original 50,000,000-token allocation
+                    </strong>
+
+                    every day, equal to
+
+                    <strong class="text-orange-600">
+                        250,000 $GASS per day
+                    </strong>.
+
+                    This creates a scheduled
+
+                    <strong class="text-slate-900">
+                        200 days of community distribution and marketing distribution
+                    </strong>
+
+                    until the full 50,000,000-token allocation has been
+                    distributed.
+
+                </p>
+
+            </div>
+
+
+
+        </section>
+
+
+        <!-- =================================================
+             ORACLE BURN PROTOCOL
+        ================================================== -->
+
+        <section
+            id="oracle"
+            class="soft-section rounded-2xl p-6 md:p-9 mb-8"
+        >
+
+            <img
+                src="Media2.jpg"
+                alt="$GASS Oracle Burn Protocol"
+                class="section-art"
+            >
+
+
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-600 border-b border-slate-200 pb-4 mb-5 flex items-center gap-3">
+
+                <svg
+                    class="w-7 h-7 text-orange-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 00-2.343 5.657z"
+                    ></path>
+
+                    <path
+                        d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"
+                    ></path>
+
+                </svg>
+
+                The Oracle Burn Protocol & Simulator
+
+            </h2>
+
+
+            <p class="text-slate-700 text-lg md:text-xl mb-5">
+
+                An off-chain automated relayer continuously monitors real-time
+                US national average gasoline price APIs:
+
+            </p>
+
+
+            <ul class="space-y-4 text-slate-700 text-lg md:text-xl mb-9 pl-2">
+
+
+                <li class="flex items-start gap-3">
+
+                    <span class="text-green-600 font-bold">
+                        •
+                    </span>
+
+                    <span>
+
+                        <strong class="text-slate-900">
+                            Baseline Target:
+                        </strong>
+
+                        Established at $4.50/gal.
+
+                    </span>
+
+                </li>
+
+
+                <li class="flex items-start gap-3">
+
+                    <span class="text-green-600 font-bold">
+                        •
+                    </span>
+
+                    <span>
+
+                        <strong class="text-slate-900">
+                            Trigger Mechanics:
+                        </strong>
+
+                        For every
+
+                        <strong class="text-amber-700">
+                            $0.10 increase
+                        </strong>
+
+                        in retail gas prices, the protocol triggers a
+
+                        <strong class="text-orange-600">
+                            2% Treasury burn
+                        </strong>.
+
+                    </span>
+
+                </li>
+
+
+                <li class="flex items-start gap-3">
+
+                    <span class="text-green-600 font-bold">
+                        •
+                    </span>
+
+                    <span>
+
+                        <strong class="text-slate-900">
+                            Source Account:
+                        </strong>
+
+                        Tokens are permanently destroyed directly out of the
+                        50,000,000-token Burn Reserve.
+
+                    </span>
+
+                </li>
+
+
+                <li class="flex items-start gap-3">
+
+                    <span class="text-green-600 font-bold">
+                        •
+                    </span>
+
+                    <span>
+
+                        <strong class="text-slate-900">
+                            Maximum Burn:
+                        </strong>
+
+                        At $9.50/gal, all 50 increments above the $4.50 baseline
+                        have been reached, resulting in the potential destruction
+                        of the entire 50,000,000-token Burn Reserve.
+
+                    </span>
+
+                </li>
+
+
+                <li class="flex items-start gap-3">
+
+                    <span class="text-green-600 font-bold">
+                        •
+                    </span>
+
+                    <span>
+
+                        <strong class="text-slate-900">
+                            Holder Impact:
+                        </strong>
+
+                        Public wallet balances remain completely untouched while
+                        global supply shrinks.
+
+                    </span>
+
+                </li>
+
+            </ul>
+
+
+            <!-- =================================================
+                 SIMULATOR
+            ================================================== -->
+
+            <div class="bg-white rounded-xl p-6 md:p-7 shadow-md relative overflow-hidden">
+
+                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-100 rounded-full filter blur-2xl pointer-events-none"></div>
+
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-5 mb-7">
+
+                    <div>
+
+                        <h3 class="text-xl md:text-2xl font-bold text-slate-900 flex items-center gap-2">
+
+                            <span>🔥</span>
+
+                            <span>
+                                Real-Time(<strong class="text-amber-800">$GASS</strong>)
+                                Mechanics Simulator
+                            </span>
+
+                        </h3>
+
+                        <p class="text-base text-slate-500 mt-1">
+
+                            Simulate gas price increases and calculate Treasury
+                            token destruction and portfolio impact.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     SLIDERS
+                ================================================== -->
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7 mb-7">
+
+
+                    <!-- GAS PRICE -->
+
+                    <div>
+
+                        <div class="flex justify-between items-center mb-3">
+
+                            <label
+                                for="gas-price-slider"
+                                class="text-base font-semibold text-slate-700"
+                            >
+
+                                Simulated Gas Price:
+
+                            </label>
+
+
+                            <span
+                                class="text-xl font-mono font-extrabold text-amber-600"
+                                id="current-gas-price"
+                            >
+
+                                $4.50 / gal
+
+                            </span>
+
+                        </div>
+
+
+                        <!--
+                            MAXIMUM IS $9.50.
+
+                            $4.50 baseline
+                            + 50 increments × $0.10
+                            = $9.50
+
+                            50 increments × 2%
+                            = 100% Treasury burned
+                        -->
+
+                        <input
+                            type="range"
+                            id="gas-price-slider"
+                            min="4.50"
+                            max="9.50"
+                            step="0.10"
+                            value="4.60"
+                            oninput="updateBurnSimulator()"
+                        >
+
+
+                        <div class="flex justify-between text-sm text-slate-500 font-mono mt-2">
+
+                            <span>
+                                $4.50
+                            </span>
+
+                            <span>
+                                $7.00
+                            </span>
+
+                            <span>
+                                $9.50
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- HOLDINGS -->
+
+                    <div>
+
+                        <div class="flex justify-between items-center mb-3">
+
+                            <label
+                                for="user-holdings-slider"
+                                class="text-base font-semibold text-slate-700"
+                            >
+
+                                Your $GASS Holdings:
+
+                            </label>
+
+
+                            <span
+                                class="text-xl font-mono font-extrabold text-orange-600"
+                                id="current-holdings-val"
+                            >
+
+                                1,000,000 $GASS
+
+                            </span>
+
+                        </div>
+
+
+                        <input
+                            type="range"
+                            id="user-holdings-slider"
+                            min="100000"
+                            max="10000000"
+                            step="100000"
+                            value="1000000"
+                            oninput="updateBurnSimulator()"
+                        >
+
+
+                        <div class="flex justify-between text-sm text-slate-500 font-mono mt-2">
+
+                            <span>
+                                100K
+                            </span>
+
+                            <span>
+                                5M
+                            </span>
+
+                            <span>
+                                10M
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     METRICS
+                ================================================== -->
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+
+                    <!-- METRIC 1 -->
+
+                    <div class="bg-slate-50 p-5 rounded-xl text-center">
+
+                        <div class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-2">
+
+                            Price Increase
+
+                        </div>
+
+
+                        <div
+                            class="text-2xl md:text-3xl font-bold font-mono text-amber-600"
+                            id="stat-increments"
+                        >
+
+                            1 × $0.10
+
+                        </div>
+
+
+                        <div class="text-sm text-slate-500 mt-2">
+
+                            Above $4.50 Baseline
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- METRIC 2 -->
+
+                    <div class="bg-slate-50 p-5 rounded-xl text-center">
+
+                        <div class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-2">
+
+                            Treasury Burned
+
+                        </div>
+
+
+                        <div
+                            class="text-2xl md:text-3xl font-bold font-mono text-orange-600"
+                            id="stat-burn-pct"
+                        >
+
+                            2.0%
+
+                        </div>
+
+
+                        <div
+                            class="text-sm font-mono text-slate-500 mt-2"
+                            id="stat-burn-tokens"
+                        >
+
+                            10,000,000 $GASS
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- METRIC 3 -->
+
+                    <div class="bg-slate-50 p-5 rounded-xl text-center">
+
+                        <div class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-2">
+
+                            Treasury Reserve
+
+                        </div>
+
+
+                        <div
+                            class="text-2xl md:text-3xl font-bold font-mono text-green-600"
+                            id="stat-treasury-tokens"
+                        >
+
+                            490,000,000
+
+                        </div>
+
+
+                        <div
+                            class="text-sm font-mono text-slate-500 mt-2"
+                            id="stat-treasury-pct"
+                        >
+
+                            98.0% Remaining
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- METRIC 4 -->
+
+                    <div class="bg-slate-50 p-5 rounded-xl text-center">
+
+                        <div class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-2">
+
+                            Supply Share Boost
+
+                        </div>
+
+
+                        <div
+                            class="text-2xl md:text-3xl font-bold font-mono text-slate-900"
+                            id="stat-share-increase"
+                        >
+
+                            +1.01%
+
+                        </div>
+
+
+                        <div
+                            class="text-sm font-mono text-slate-500 mt-2"
+                            id="stat-effective-holding"
+                        >
+
+                            1,010,101 Equivalent
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAXIMUM BURN INFORMATION -->
+
+                <div class="mt-6 bg-orange-50 border border-orange-200 rounded-xl p-5">
+
+                    <div class="flex items-start gap-3">
+
+                        <span class="text-orange-600 text-xl">
+                            🔥
+                        </span>
+
+                        <div>
+
+                            <h4 class="font-bold text-orange-800 mb-1">
+                                Maximum Treasury Burn
+                            </h4>
+
+                            <p class="text-base text-orange-900 leading-relaxed">
+
+                                At the maximum simulated gas price of
+                                <strong>$9.50/gal</strong>, the simulator reaches
+                                50 × $0.10 increments above the $4.50 baseline.
+                                At 2% per increment, that represents a maximum
+                                burn of <strong>100%</strong> of the original
+                                50,000,000 $GASS Burn Reserve.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <p class="mt-4 text-xs md:text-sm text-slate-500 leading-relaxed italic">
+                *Scheduled $GASS burns are executed only after applicable vesting time limits have been exhausted.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             ROADMAP
+        ================================================== -->
+
+        <section
+            id="roadmap"
+            class="soft-section rounded-2xl p-6 md:p-9 mb-8"
+        >
+
+            <img
+                src="Media1.jpg"
+                alt="$GASS Protocol Roadmap"
+                class="section-art"
+            >
+
+
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-600 border-b border-slate-200 pb-4 mb-7 flex items-center gap-3">
+
+                <svg
+                    class="w-7 h-7 text-orange-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                    ></path>
+
+                </svg>
+
+                Protocol Roadmap
+
+            </h2>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+
+                <!-- PHASE 1 -->
+
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+
+                    <div class="text-amber-600 font-bold text-base uppercase tracking-wider mb-3">
+
+                        Phase 1 — Launch
+
+                    </div>
+
+
+                    <ul class="text-base md:text-lg text-slate-600 space-y-3">
+
+                        <li>
+                            ✔ Smart Contract Deployment
+                        </li>
+
+                        <li>
+                            ✔ Revoke Minting Authority
+                        </li>
+
+                        <li>
+                            ✔ 50% Treasury Pool Lock
+                        </li>
+
+                        <li>
+                            ✔ DEX Liquidity Initialization
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- PHASE 2 -->
+
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+
+                    <div class="text-orange-600 font-bold text-base uppercase tracking-wider mb-3">
+
+                        Phase 2 — Oracle Integration
+
+                    </div>
+
+
+                    <ul class="text-base md:text-lg text-slate-600 space-y-3">
+
+                        <li>
+                            ⚡ Chainlink Gas Feed Relayer
+                        </li>
+
+                        <li>
+                            ⚡ Automated $0.10 Tier Trigger
+                        </li>
+
+                        <li>
+                            ⚡ Live Whitepaper & Simulator
+                        </li>
+
+                        <li>
+                            ⚡ First Oracle Treasury Burn
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- PHASE 3 -->
+
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+
+                    <div class="text-green-600 font-bold text-base uppercase tracking-wider mb-3">
+
+                        Phase 3 — Ecosystem Expansion
+
+                    </div>
+
+
+                    <ul class="text-base md:text-lg text-slate-600 space-y-3">
+
+                        <li>
+                            ⏳ Fuel Rebate Vesting & Distribution Vaults
+                        </li>
+
+                        <li>
+                            ⏳ CEX Listings & Partnerships
+                        </li>
+
+                        <li>
+                            ⏳ Global Oil & Gas Data Feeds
+                        </li>
+
+                        <li>
+                            ⏳ DAO Governance Activation
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="text-center text-slate-500 text-base md:text-lg mt-14">
+
+            <a
+                href="https://t.me/+xd8fn9okaIQwMmUx"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold px-6 py-3 shadow-md transition-colors mb-5"
+                aria-label="Join the GASS Telegram community"
+            >
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M21.7 4.3a1.5 1.5 0 0 0-1.6-.3L3.2 10.6a1.5 1.5 0 0 0 .1 2.8l4.3 1.4 1.6 5a1.5 1.5 0 0 0 2.5.6l2.6-2.7 4.1 3a1.5 1.5 0 0 0 2.3-.9l2-14a1.5 1.5 0 0 0-1-1.5ZM9 14.2l8.3-6.5-6.6 7.9-.3 2.4-1.4-3.8Z"/>
+                </svg>
+                Join $GASS on Telegram
+            </a>
+
+            <p>
+                &copy; 2026 $GASS Token Protocol. All rights reserved.
+            </p>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =================================================
+         JAVASCRIPT
+    ================================================== -->
+
+    <script>
+
+
+        /* =================================================
+           COPY CONTRACT ADDRESS
+        ================================================= */
+
+        function copyAddress() {
+
+            const address =
+                document
+                    .getElementById("contract-address")
+                    .innerText
+                    .trim();
+
+
+            if (
+                navigator.clipboard &&
+                window.isSecureContext
+            ) {
+
+                navigator.clipboard
+                    .writeText(address)
+                    .catch(() => {
+
+                        fallbackCopy(address);
+
+                    });
+
+            } else {
+
+                fallbackCopy(address);
+
+            }
+
+
+            const btnText =
+                document.getElementById("copy-btn-text");
+
+
+            const originalText =
+                btnText.innerText;
+
+
+            btnText.innerText = "Copied!";
+
+
+            setTimeout(() => {
+
+                btnText.innerText = originalText;
+
+            }, 2000);
+
+        }
+
+
+        /* =================================================
+           CLIPBOARD FALLBACK
+        ================================================= */
+
+        function fallbackCopy(text) {
+
+            const tempInput =
+                document.createElement("textarea");
+
+
+            tempInput.value = text;
+
+
+            tempInput.style.position = "fixed";
+            tempInput.style.opacity = "0";
+
+
+            document.body.appendChild(tempInput);
+
+
+            tempInput.focus();
+            tempInput.select();
+
+
+            try {
+
+                document.execCommand("copy");
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to copy address:",
+                    error
+                );
+
+            }
+
+
+            document.body.removeChild(tempInput);
+
+        }
+
+
+        /* =================================================
+           ORACLE BURN SIMULATOR
+        ================================================= */
+
+        function updateBurnSimulator() {
+
+            const priceElement =
+                document.getElementById(
+                    "gas-price-slider"
+                );
+
+
+            const holdingsElement =
+                document.getElementById(
+                    "user-holdings-slider"
+                );
+
+
+            if (!priceElement || !holdingsElement) {
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               Core Tokenomics
+            --------------------------------------------- */
+
+            const currentPrice =
+                parseFloat(
+                    priceElement.value
+                );
+
+
+            const userHoldingsVal =
+                parseFloat(
+                    holdingsElement.value
+                );
+
+
+            const baseline = 4.50;
+
+            const step = 0.10;
+
+            /*
+             * Every $0.10 increase burns 2% of the
+             * ORIGINAL 50,000,000-token Burn Reserve.
+             */
+            const burnRatePerStep = 0.02;
+
+            const initialTreasury = 50000000;
+
+            const initialTotalSupply = 1000000000;
+
+
+            /* ---------------------------------------------
+               Calculate $0.10 increments above baseline
+            --------------------------------------------- */
+
+            let increments =
+                Math.floor(
+                    (
+                        currentPrice -
+                        baseline +
+                        0.0001
+                    ) / step
+                );
+
+
+            if (increments < 0) {
+
+                increments = 0;
+
+            }
+
+
+            /*
+             * Maximum is 50 increments.
+             *
+             * 50 × 2% = 100% of Treasury.
+             */
+            const maxIncrements = 50;
+
+
+            if (increments > maxIncrements) {
+
+                increments = maxIncrements;
+
+            }
+
+
+            /* ---------------------------------------------
+               Calculate Treasury burn percentage
+            --------------------------------------------- */
+
+            let burnPercentageDecimal =
+                increments *
+                burnRatePerStep;
+
+
+            /*
+             * Never allow more than 100% of Treasury
+             * to be burned.
+             */
+
+            if (burnPercentageDecimal > 1) {
+
+                burnPercentageDecimal = 1;
+
+            }
+
+
+            /* ---------------------------------------------
+               Calculate tokens burned
+            --------------------------------------------- */
+
+            let tokensBurned =
+                initialTreasury *
+                burnPercentageDecimal;
+
+
+            if (tokensBurned > initialTreasury) {
+
+                tokensBurned =
+                    initialTreasury;
+
+            }
+
+
+            /* ---------------------------------------------
+               Remaining Treasury
+            --------------------------------------------- */
+
+            const remainingTreasury =
+                initialTreasury -
+                tokensBurned;
+
+
+            /* ---------------------------------------------
+               Remaining Total Supply
+            --------------------------------------------- */
+
+            const remainingTotalSupply =
+                initialTotalSupply -
+                tokensBurned;
+
+
+            /* ---------------------------------------------
+               Treasury Percentage Remaining
+            --------------------------------------------- */
+
+            const treasuryPctRemaining =
+                (
+                    remainingTreasury /
+                    initialTreasury
+                ) * 100;
+
+
+            /* ---------------------------------------------
+               Supply Shrinkage Ratio
+            --------------------------------------------- */
+
+            let supplyShrinkageRatio = 1;
+
+
+            if (remainingTotalSupply > 0) {
+
+                supplyShrinkageRatio =
+                    initialTotalSupply /
+                    remainingTotalSupply;
+
+            }
+
+
+            /* ---------------------------------------------
+               Effective Holding
+            --------------------------------------------- */
+
+            const effectiveHolding =
+                Math.round(
+                    userHoldingsVal *
+                    supplyShrinkageRatio
+                );
+
+
+            /* ---------------------------------------------
+               Supply Share Boost
+            --------------------------------------------- */
+
+            const shareBoostPct =
+                (
+                    (
+                        supplyShrinkageRatio -
+                        1
+                    ) * 100
+                ).toFixed(2);
+
+
+            /* ---------------------------------------------
+               Update Gas Price
+            --------------------------------------------- */
+
+            document.getElementById(
+                "current-gas-price"
+            ).innerText =
+                `$${currentPrice.toFixed(2)} / gal`;
+
+
+            /* ---------------------------------------------
+               Update Holdings
+            --------------------------------------------- */
+
+            document.getElementById(
+                "current-holdings-val"
+            ).innerText =
+                `${userHoldingsVal.toLocaleString()} $GASS`;
+
+
+            /* ---------------------------------------------
+               Update Increment Count
+            --------------------------------------------- */
+
+            document.getElementById(
+                "stat-increments"
+            ).innerText =
+                `${increments} × $0.10`;
+
+
+            /* ---------------------------------------------
+               Update Burn Percentage
+            --------------------------------------------- */
+
+            document.getElementById(
+                "stat-burn-pct"
+            ).innerText =
+                `${(
+                    burnPercentageDecimal * 100
+                ).toFixed(1)}%`;
+
+
+            /* ---------------------------------------------
+               Update Burned Tokens
+            --------------------------------------------- */
+
+            document.getElementById(
+                "stat-burn-tokens"
+            ).innerText =
+                `-${tokensBurned.toLocaleString()} $GASS`;
+
+
+            /* ---------------------------------------------
+               Update Treasury
+            --------------------------------------------- */
+
+            document.getElementById(
+                "stat-treasury-tokens"
+            ).innerText =
+                remainingTreasury.toLocaleString();
+
+
+            /* ---------------------------------------------
+               Update Treasury Percentage
+            --------------------------------------------- */
+
+            document.getElementById(
+                "stat-treasury-pct"
+            ).innerText =
+                `${treasuryPctRemaining.toFixed(1)}% Remaining`;
+
+
+            /* ---------------------------------------------
+               Update Supply Share Boost
+            --------------------------------------------- */
+
+            document.getElementById(
+                "stat-share-increase"
+            ).innerText =
+                `+${shareBoostPct}%`;
+
+
+            /* ---------------------------------------------
+               Update Effective Holding
+            --------------------------------------------- */
+
+            document.getElementById(
+                "stat-effective-holding"
+            ).innerText =
+                `${effectiveHolding.toLocaleString()} Equivalent`;
+
+        }
+
+
+        /* =================================================
+           INITIALIZE
+        ================================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                updateBurnSimulator();
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
